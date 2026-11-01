@@ -1,0 +1,21 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Android 11 and older. Declared without maxSdkVersion on purpose: some
+       Xiaomi phones on Android 12 still check BLUETOOTH when a socket
+       connects. Both are granted at install time without asking. -->
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+  <!-- Android 6 to 11 find devices only with the location permission. -->
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
+
+  <!-- Android 12+: paired devices, pairing and connecting. -->
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <!-- Android 12+: finding devices. The plugin does not use the results
+       for location. -->
+  <uses-permission
+      android:name="android.permission.BLUETOOTH_SCAN"
+      android:usesPermissionFlags="neverForLocation" />
+
+  <!-- Optional, so that apps using the plugin still install on devices
+       without Bluetooth. -->
+  <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+</manifest>

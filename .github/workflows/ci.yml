@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dart:
+    name: Dart tests (Flutter ${{ matrix.flutter }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The oldest Flutter the package supports, and the latest stable.
+        flutter: ['3.27.4', '3.x']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter }}
+          channel: stable
+          cache: true
+      # The example needs newer Flutter than the package, so it is left out here.
+      - run: flutter pub get --no-example
+      - name: Format
+        if: matrix.flutter == '3.x'
+        run: dart format --output=none --set-exit-if-changed lib test
+      - run: flutter analyze lib test
+      - run: flutter test
+      - name: Publish dry run
+        if: matrix.flutter == '3.x'
+        run: flutter pub publish --dry-run
+
+  android:
+    name: Android app build (Flutter ${{ matrix.flutter }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        flutter: ['3.27.4', '3.x']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter }}
+          channel: stable
+          cache: true
+      - name: Build a new app that uses the plugin
+        shell: bash
+        run: |
+          set -eo pipefail
+          flutter create --platforms=android --project-name=plugin_user "$RUNNER_TEMP/app"
+          cd "$RUNNER_TEMP/app"
+          perl -0pi -e "s|\ndependencies:\n|\ndependencies:\n  bluetooth_serial_next:\n    path: $GITHUB_WORKSPACE\n|" pubspec.yaml
+          flutter pub get
+          grep -q '"bluetooth_serial_next"' .flutter-plugins-dependencies
+          flutter build apk --debug
+          # Release builds run R8.
+          flutter build apk --release
+
+  example:
+    name: Example build and Kotlin tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter analyze
+        working-directory: example
+      - run: flutter test
+        working-directory: example
+      - run: flutter build apk --debug
+        working-directory: example
+      - run: ./gradlew :bluetooth_serial_next:testDebugUnitTest
+        working-directory: example/android

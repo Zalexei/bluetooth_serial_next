@@ -1,0 +1,32 @@
+name: bluetooth_serial_next
+description: "Maintained replacement for flutter_bluetooth_serial: Bluetooth Classic SPP (RFCOMM) for Android, for HC-05/HC-06, ESP32, ELM327 and printers."
+version: 0.1.0
+repository: https://github.com/Zalexei/bluetooth_serial_next
+issue_tracker: https://github.com/Zalexei/bluetooth_serial_next/issues
+topics: [bluetooth, serial, spp, arduino, esp32]
+screenshots:
+  - description: The example terminal talking to an ESP32 over Bluetooth SPP.
+    path: doc/terminal.png
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.27.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  meta: ^1.15.0
+  serial_port_core: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  pigeon: 26.0.1
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: io.github.zalexei.bluetooth_serial_next
+        pluginClass: BluetoothSerialNextPlugin
