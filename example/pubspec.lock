@@ -186,11 +186,12 @@ packages:
     source: hosted
     version: "5.0.6"
   serial_port_core:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "../../serial_port_core"
-      relative: true
-    source: path
+      name: serial_port_core
+      sha256: c067eefda1cc04f49218199567d7be083ff2a4d40e45063cc7c289e9de9119df
+      url: "https://pub.dev"
+    source: hosted
     version: "0.1.0"
   sky_engine:
     dependency: transitive
