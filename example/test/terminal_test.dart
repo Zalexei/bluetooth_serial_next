@@ -4,6 +4,9 @@ import 'package:bluetooth_serial_next/bluetooth_serial_next.dart';
 import 'package:bluetooth_serial_next/src/messages.g.dart';
 import 'package:bluetooth_serial_next_example/main.dart';
 import 'package:flutter/services.dart';
+// Flutter 3.50 moved Material to package:material_ui; this example still
+// supports older Flutter, so it keeps the old import.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
