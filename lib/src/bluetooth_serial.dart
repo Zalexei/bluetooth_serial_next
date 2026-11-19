@@ -131,7 +131,10 @@ class BluetoothSerial {
       onListen: () async {
         final previous = _scan;
         _scan = controller;
-        if (previous != null && !previous.isClosed) await previous.close();
+        // Not awaited: the future of close() waits for the listener, which
+        // may be paused or slow, and the scan must start before a cancel
+        // that comes right after listening reaches the platform.
+        if (previous != null && !previous.isClosed) unawaited(previous.close());
         try {
           await _call(_host.startDiscovery);
         } on SerialException catch (e) {

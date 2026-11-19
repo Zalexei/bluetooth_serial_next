@@ -1,6 +1,6 @@
 name: bluetooth_serial_next
 description: "Maintained replacement for flutter_bluetooth_serial: Bluetooth Classic SPP (RFCOMM) for Android, for HC-05/HC-06, ESP32, ELM327 and printers."
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/Zalexei/bluetooth_serial_next
 issue_tracker: https://github.com/Zalexei/bluetooth_serial_next/issues
 topics: [bluetooth, serial, spp, arduino, esp32]

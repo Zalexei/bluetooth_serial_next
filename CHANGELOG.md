@@ -1,3 +1,12 @@
+## 0.1.1
+
+* Fixed `discover()` never starting a new scan while the listener of the
+  previous scan was paused (for example inside an `await for` body).
+* Fixed a scan left running on the phone when the subscription was cancelled
+  right after listening while a previous scan was still being replaced.
+* More tests: permissions, adapter state, ports after a lost link,
+  `BluetoothSerialDevice`.
+
 ## 0.1.0
 
 * First release: Bluetooth Classic serial ports (SPP over RFCOMM) on
